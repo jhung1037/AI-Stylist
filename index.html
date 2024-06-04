@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Advice App</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-200 flex justify-center items-center h-screen">
+    <div class="w-1/2 max-w-md p-8 bg-white rounded shadow-md mx-auto">
+        <h1 class="text-xl font-bold mb-4">Get Advice</h1>
+        <form id="adviceForm">
+            <div class="mb-4">
+                <label for="inputText" class="block text-gray-700 mb-2">Enter your input:</label>
+                <textarea id="inputText" name="inputText" rows="5" class="w-full rounded border px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"></textarea>
+            </div>
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-sm">Get Advice</button>
+        </form>
+        <div id="adviceMessage" class="mt-4 text-green-500"></div>
+    </div>
+    <div class="w-1/2 mx-auto">
+        <img id="generatedImage" src="https://via.placeholder.com/400x200" class="mx-auto" />
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
+
