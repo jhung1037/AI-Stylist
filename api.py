@@ -10,8 +10,8 @@ connection = {}
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    print("Weaviate client connected")
     connection["Weaviate_client"] = LLM.Server()
+    print("Weaviate client connected")
     yield
     connection["Weaviate_client"].client.close()
     print("Weaviate client closed")
@@ -24,6 +24,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 class Request(BaseModel):
     input_text: str
@@ -52,7 +53,6 @@ async def get_advice(request: Request):
     )
 
     return {"message": response.text}
-
 
 @app.post("/illustration")
 async def get_advice(prompt: Request):
