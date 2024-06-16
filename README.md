@@ -1,0 +1,24 @@
+#### Steps:
+
+1. Install the required packages by running the following command:
+
+   ```
+   pip install -r requirements.txt
+   ```
+
+2. Set your API keys in the `LLM.py` file:
+   - Cohere API key
+   - Weaviate WCS URL
+   - Weaviate API key
+
+   (Optional) Set your AI Horde API key in `api.py` for faster image generation.
+
+3. For initial setup, run the script `reconfigure_vectorizer.py` in the `else` file.
+
+4. Start the FastAPI server by running the following command:
+
+   ```
+   fastapi run api.py
+   ```
+
+5. Open `index.html` in your browser and have fun!

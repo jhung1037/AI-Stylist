@@ -58,7 +58,7 @@ async def get_advice(request: Request):
 async def get_advice(prompt: Request):
 
     image_generate_async_request = ImageGenerateAsyncRequest(
-        apikey="0000000000",
+        apikey="0000000000", # set your personal AI Horde API key here
         prompt=f"Draw a model illustration base on: {prompt.input_text}",
         models=["Deliberate"]
     )
