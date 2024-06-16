@@ -2,9 +2,30 @@ const adviceForm = document.getElementById('adviceForm');
 const adviceMessage = document.getElementById('adviceMessage');
 const generatedImage = document.getElementById('generatedImage');
 
+// Functions
+let process = '';
+let dots = '';
+let interval;
+function Animation() {
+  dots = dots === '...' ? '' : dots + '.';
+  adviceMessage.textContent = `${process}${dots}`;
+}
+
+function startAnimation() {
+  interval = setInterval(Animation, 375);
+}
+
+function endAnimation() {
+  clearInterval(interval);
+  adviceMessage.textContent = `${process}`;
+}
+
+// Script
 adviceForm.addEventListener('submit', async (event) => {
   event.preventDefault();
-  adviceMessage.textContent = 'Thinking...';
+  adviceMessage.classList.remove("hidden");
+  process = 'Thinking';
+  startAnimation();
   const inputText = document.getElementById('inputText').value;
 
   try {
@@ -17,7 +38,7 @@ adviceForm.addEventListener('submit', async (event) => {
     });
 
     const data = await response.json();
-    adviceMessage.textContent = 'Visualising...';
+    process = 'Visualising';
 
     const illustrationResponse = await fetch('http://127.0.0.1:8000/illustration', {
       method: 'POST',
@@ -29,6 +50,7 @@ adviceForm.addEventListener('submit', async (event) => {
 
     const illustrationData = await illustrationResponse.json();
 
+    endAnimation();
     adviceMessage.textContent = data.message;
     if (illustrationData.url) {
       generatedImage.src = illustrationData.url;
@@ -38,9 +60,8 @@ adviceForm.addEventListener('submit', async (event) => {
     }
 
   } catch (error) {
+    endAnimation();
     console.error(error);
     adviceMessage.textContent = 'An error occurred. Please try again.';
-  } finally {
-    adviceForm.reset();
   }
 });

@@ -1,27 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Get Advice App</title>
-    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Stylist</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-200 flex justify-center items-center h-screen">
-    <div class="w-1/2 max-w-md p-8 bg-white rounded shadow-md mx-auto">
-        <h1 class="text-xl font-bold mb-4">Get Advice</h1>
+<body class="bg-gray-100">
+  <div class="container mx-auto py-8 flex flex-col md:flex-row">
+    <!-- Left Section -->
+    <div class="w-full md:w-1/2 px-4 mb-8 md:mb-0">
+      <div class="bg-white shadow-md rounded-lg p-6">
         <form id="adviceForm">
-            <div class="mb-4">
-                <label for="inputText" class="block text-gray-700 mb-2">Enter your input:</label>
-                <textarea id="inputText" name="inputText" rows="5" class="w-full rounded border px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"></textarea>
-            </div>
-            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-sm">Get Advice</button>
+            <h2 class="text-2xl font-bold mb-4">What are your styling needs? :)</h2>
+            <input id="inputText" type="textarea" class="w-full border border-gray-300 rounded-md py-2 px-4 mb-4" placeholder="I am going to royal ascot next weekend, but the weather looks chilly.">
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4">Submit</button>
         </form>
-        <div id="adviceMessage" class="mt-4 text-green-500"></div>
+        <div id="adviceMessage" class="hidden"></div>
+      </div>
     </div>
-    <div class="w-1/2 mx-auto">
-        <img id="generatedImage" src="https://via.placeholder.com/400x200" class="mx-auto" />
+        
+    <!-- Right Section -->
+    <div class="w-full md:w-1/2 px-4">
+      <div class="bg-white shadow-md rounded-lg p-6">
+        <h2 class="text-2xl font-bold mb-4">Visual Sample</h2>
+        <img id="generatedImage" src="resource/Miss Purrfect.png" class="w-full rounded" />
+      </div>
     </div>
-    <script src="script.js"></script>
+  </div>
+  <script src="script.js"></script>
 </body>
 </html>
-

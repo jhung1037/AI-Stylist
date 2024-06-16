@@ -13,7 +13,7 @@
 
    (Optional) Set your AI Horde API key in `api.py` for faster image generation.
 
-3. For initial setup, run the script `reconfigure_vectorizer.py` in the `else` file.
+3. For initial setup, run the script `reconfigure_vectorizer.py` in the `resource` file.
 
 4. Start the FastAPI server by running the following command:
 
