@@ -1,22 +1,18 @@
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
-from contextlib import asynccontextmanager
 from horde_sdk.ai_horde_api import AIHordeAPISimpleClient
 from horde_sdk.ai_horde_api.apimodels import ImageGenerateAsyncRequest
-import LLM
+import llm_client
 
-connection = {}
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    connection["Weaviate_client"] = LLM.Server()
-    print("Weaviate client connected")
-    yield
-    connection["Weaviate_client"].client.close()
-    print("Weaviate client closed")
+def connect_weaviate():
+    weaviate_client = llm_client.Client()
+    yield weaviate_client
+    weaviate_client.weaviate.close()
 
-app = FastAPI(lifespan=lifespan)
+
+app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins="*",
@@ -26,13 +22,15 @@ app.add_middleware(
 )
 
 
+# API Functions
 class Request(BaseModel):
     input_text: str
 
-@app.post("/advice")
-async def get_advice(request: Request):
 
-    response = connection["Weaviate_client"].advisor_data.query.hybrid(
+@app.post("/advice")
+async def get_advice(request: Request, connection=Depends(connect_weaviate)):
+
+    response = connection.advisor_data.query.hybrid(
         query = request.input_text,
         limit = 5
     )
@@ -41,7 +39,7 @@ async def get_advice(request: Request):
     for obj in response.objects:
         retrieve += str(obj.properties["combinations"])
         
-    response = connection["Weaviate_client"].cohere.chat(
+    response = connection.cohere.chat(
         message = f"""DATA: {retrieve}\n\n
                     Base on the DATA and the user's request: {request.input_text}, designe ONE outfit suggestion.
                     Output Format Example:
@@ -54,8 +52,9 @@ async def get_advice(request: Request):
 
     return {"message": response.text}
 
+
 @app.post("/illustration")
-async def get_advice(prompt: Request):
+async def get_image(prompt: Request):
 
     image_generate_async_request = ImageGenerateAsyncRequest(
         apikey="0000000000", # set your personal AI Horde API key here

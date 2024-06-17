@@ -18,7 +18,7 @@
 4. Start the FastAPI server by running the following command:
 
    ```
-   fastapi run api.py
+   fastapi run backend/api.py
    ```
 
 5. Open `index.html` in your browser and have fun!
