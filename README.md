@@ -21,4 +21,4 @@
    fastapi run backend/api.py
    ```
 
-5. Open `index.html` in your browser and have fun!
+5. Open `index.html` in the `frontend` file in your browser and have fun!
