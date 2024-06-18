@@ -1,4 +1,3 @@
-from fastapi import Depends
 from fastapi.testclient import TestClient
 from api import app
 
