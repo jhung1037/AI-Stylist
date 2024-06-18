@@ -36,7 +36,7 @@ adviceForm.addEventListener('submit', async (event) => {
       },
       body: JSON.stringify({ input_text: inputText })
     });
-
+    
     const data = await response.json();
     process = 'Visualising';
 

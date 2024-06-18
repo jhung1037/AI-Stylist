@@ -1,15 +1,17 @@
 from fastapi import Depends, FastAPI
-from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from horde_sdk.ai_horde_api import AIHordeAPISimpleClient
 from horde_sdk.ai_horde_api.apimodels import ImageGenerateAsyncRequest
+from pydantic import BaseModel
 import llm_client
 
 
 def connect_weaviate():
     weaviate_client = llm_client.Client()
-    yield weaviate_client
-    weaviate_client.weaviate.close()
+    try:
+        yield weaviate_client
+    finally:
+        weaviate_client.weaviate.close()
 
 
 app = FastAPI()
@@ -40,14 +42,16 @@ async def get_advice(request: Request, connection=Depends(connect_weaviate)):
         retrieve += str(obj.properties["combinations"])
         
     response = connection.cohere.chat(
-        message = f"""DATA: {retrieve}\n\n
-                    Base on the DATA and the user's request: {request.input_text}, designe ONE outfit suggestion.
-                    Output Format Example:
-                     - Top: Fitted navy blue button-down shirt.
-                     - Bottom: Dark wash slim fit jeans.
-                     - Shoes: Brown leather loafers.
-                     - Accessories: A sleek silver watch and a brown leather belt.""",
-        max_tokens = 250
+        message = f"""DATA: {retrieve}\n
+        You are a Miss Purrfect, a cat fashion stylist. Base on the DATA and the user's request: {request.input_text}, design ONE outfit suggestion.
+        (Output Example:
+        Meow~! Here are my suggestion:\n
+        -- Top --\n A tailored, forest green blouse with a V-neckline.\n
+        -- Bottom --\n A pair of high-waisted, wide-leg trousers in a dark charcoal gray.\n
+        -- Shoes --\n Dark green pointed-toe heels to match the blouse.\n
+        -- Accessories --\n Add a delicate gold necklace with a small pendant, and a pair of gold stud earrings.\n
+        Hope you feel meow-nificent in this outfit!)""",
+        max_tokens = 200
     )
 
     return {"message": response.text}
