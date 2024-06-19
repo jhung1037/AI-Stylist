@@ -8,25 +8,27 @@
 </head>
 <body class="bg-gray-100">
   <div class="container mx-auto py-8 flex flex-col md:flex-row">
-    <!-- Left Section -->
+
+    <!-- Right Section -->
     <div class="w-full md:w-1/2 px-4 mb-8 md:mb-0">
+      <div class="bg-white shadow-md rounded-lg p-6">
+        <h2 id="intro" class="text-2xl font-bold mb-4">Hi, I am Miss Purrfect. Your Purr-sonal Stylist!</h2>
+        <img id="generatedImage" src="../resources/Miss Purrfect.png" class="w-full rounded" />
+      </div>
+    </div>
+
+    <!-- Left Section -->
+    <div class="w-full md:w-1/2 px-4">
       <div class="bg-white shadow-md rounded-lg p-6">
         <form id="adviceForm">
             <h2 class="text-2xl font-bold mb-4">What are your styling needs? 🐾</h2>
-            <input id="inputText" type="textarea" class="w-full border border-gray-300 rounded-md py-2 px-4 mb-4" placeholder="I am going to royal ascot next weekend, but the weather looks chilly.">
+            <input id="inputText" type="textarea" class="w-full border border-gray-300 rounded-md py-2 px-4 mb-4" placeholder="I am a young woman going to royal ascot next weekend, but the weather looks chilly.">
             <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4">Submit</button>
         </form>
         <div id="adviceMessage" class="whitespace-pre-wrap hidden"></div>
       </div>
     </div>
-        
-    <!-- Right Section -->
-    <div class="w-full md:w-1/2 px-4">
-      <div class="bg-white shadow-md rounded-lg p-6">
-        <h2 class="text-2xl font-bold mb-4">Visual Sample</h2>
-        <img id="generatedImage" src="../resources/Miss Purrfect.png" class="w-full rounded" />
-      </div>
-    </div>
+
   </div>
   <script src="script.js"></script>
 </body>

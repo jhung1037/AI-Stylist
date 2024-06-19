@@ -1,5 +1,6 @@
 const adviceForm = document.getElementById('adviceForm');
 const adviceMessage = document.getElementById('adviceMessage');
+const intro = document.getElementById('intro');
 const generatedImage = document.getElementById('generatedImage');
 
 // Functions
@@ -53,8 +54,8 @@ adviceForm.addEventListener('submit', async (event) => {
     endAnimation();
     adviceMessage.textContent = data.message;
     if (illustrationData.url) {
+      intro.textContent = "Visual Sample";
       generatedImage.src = illustrationData.url;
-      generatedImage.style.display = 'block';
     } else {
       console.error('Illustration API response missing URL');
     }
