@@ -50,8 +50,7 @@ async def get_advice(request: Request, connection=Depends(connect_weaviate)):
         -- Bottom --\n A pair of high-waisted, wide-leg trousers in a dark charcoal gray.\n
         -- Shoes --\n Dark green pointed-toe heels to match the blouse.\n
         -- Accessories --\n Add a delicate gold necklace with a small pendant, and a pair of gold stud earrings.\n
-        Hope you feel meow-nificent in this outfit!)""",
-        max_tokens = 200
+        Hope you feel meow-nificent in this outfit!)"""
     )
 
     return {"message": response.text}

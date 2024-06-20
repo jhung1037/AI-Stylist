@@ -54,8 +54,8 @@ adviceForm.addEventListener('submit', async (event) => {
     endAnimation();
     adviceMessage.textContent = data.message;
     if (illustrationData.url) {
-      intro.textContent = "Visual Sample";
       generatedImage.src = illustrationData.url;
+      intro.textContent = "Visual Sample";
     } else {
       console.error('Illustration API response missing URL');
     }
