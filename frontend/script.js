@@ -40,7 +40,7 @@ adviceForm.addEventListener('submit', async (event) => {
     
     const data = await response.json();
     process = 'Visualising';
-
+    // TODO: add API key action
     const illustrationResponse = await fetch('http://127.0.0.1:8000/illustration', {
       method: 'POST',
       headers: {
