@@ -2,10 +2,11 @@ document.addEventListener('DOMContentLoaded', function() {
   const accountAction = document.getElementById('accountAction');
   const haveAccountBtn = document.getElementById('haveAccountBtn');
   const createAccountBtn = document.getElementById('createAccountBtn');
-  const loginForm = document.getElementById('loginForm');
+  const Form = document.getElementById('Form');
   const usernameInput = document.getElementById('usernameInput');
   const passwordInput = document.getElementById('passwordInput');
-  const loginBtn = document.getElementById('loginBtn');
+  const formBtn = document.getElementById('formBtn');
+  const subBtn = document.getElementById('subBtn');
   const userPage = document.getElementById('userPage');
   const userGreeting = document.getElementById('userGreeting');
   const apiKeyInput = document.getElementById('apiKeyInput');
@@ -13,41 +14,58 @@ document.addEventListener('DOMContentLoaded', function() {
 
   let createAccount, username;
 
-  function toLoginForm(shouldCreateAccount) {
+  function toForm(shouldCreateAccount) {
+    if (shouldCreateAccount) {
+      formBtn.textContent = 'Submit';
+      subBtn.textContent = 'Login Page';
+    } else {
+      formBtn.textContent = 'Login';
+      subBtn.textContent = 'Join Instead';
+    }
     accountAction.classList.add('hidden');
-    loginForm.classList.remove('hidden');
+    Form.classList.remove('hidden');
     createAccount = shouldCreateAccount;
   }
-  haveAccountBtn.addEventListener('click', function() {toLoginForm(false)});
-  createAccountBtn.addEventListener('click', function() {toLoginForm(true);});
+  haveAccountBtn.addEventListener('click', function() {toForm(false)});
+  createAccountBtn.addEventListener('click', function() {toForm(true);});
+  subBtn.addEventListener('click', function() {toForm(!createAccount);});
 
-  loginBtn.addEventListener('click', async(event) => {
+  formBtn.addEventListener('click', async(event) => {
     event.preventDefault();
-    const login = await fetch('http://127.0.0.1:8000/account', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ create_account : createAccount, username : usernameInput.value, password : passwordInput.value })
-    });
-    
-    const account = await login.json();
-    if (account.success) {
-      username = usernameInput.value;
-      loginForm.classList.add('hidden');
-      userPage.classList.remove('hidden');
-      userGreeting.textContent = `Hi, ${username}`;
-      apiKeyInput.textContent = account.key;
-    } //TODO: no username, back to create account; have account already
-    usernameInput.value = '';
-    passwordInput.value = '';
-
+    if (!(usernameInput.value && passwordInput.value)) {
+      alert("Please fill out the fields");
+    } else {
+      const login = await fetch('http://127.0.0.1:8000/account', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ create_account : createAccount, username : usernameInput.value, password : passwordInput.value })
+      });
+      
+      const account = await login.json();
+      if (account.success) {
+        username = usernameInput.value;
+        Form.classList.add('hidden');
+        userPage.classList.remove('hidden');
+        userGreeting.textContent = `Hi, ${username}`;
+        apiKeyInput.textContent = account.key;
+      } else {
+        if (createAccount) {
+          alert("The username had been taken");
+        } else {
+          alert("Username or password incorrect");
+        }
+      }
+      usernameInput.value = '';
+      passwordInput.value = '';
+    }
   });
 
   logoutBtn.addEventListener('click', async(event) => {
     event.preventDefault();
     if (apiKeyInput.textContent) {
-      const logout = await fetch('http://127.0.0.1:8000/record', {
+      await fetch('http://127.0.0.1:8000/record', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

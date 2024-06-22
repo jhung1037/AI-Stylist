@@ -37,11 +37,13 @@ db = {}
 @app.post("/account")
 def get_image(account: Account):
     if account.create_account:
+        if account.username in db:
+            return {"success": False}
         db[account.username] = [account.password, None]
         return {"success": True, "key": None}
     if account.username in db and db[account.username][0] == account.password:
         return {"success": True, "key": db[account.username][1]}
-    return {"success": False, "key": None}
+    return {"success": False}
 
 
 @app.post("/record")
