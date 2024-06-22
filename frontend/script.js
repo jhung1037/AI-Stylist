@@ -2,6 +2,7 @@ const adviceForm = document.getElementById('adviceForm');
 const adviceMessage = document.getElementById('adviceMessage');
 const intro = document.getElementById('intro');
 const generatedImage = document.getElementById('generatedImage');
+const apiKeyInput = document.getElementById('apiKeyInput');
 
 // Functions
 let process = '';
@@ -24,6 +25,7 @@ function endAnimation() {
 // Script
 adviceForm.addEventListener('submit', async (event) => {
   event.preventDefault();
+  if (!apiKeyInput.value) { apiKeyInput.value = "0000000000"; }
   adviceMessage.classList.remove("hidden");
   process = 'Thinking';
   startAnimation();
@@ -40,13 +42,13 @@ adviceForm.addEventListener('submit', async (event) => {
     
     const data = await response.json();
     process = 'Visualising';
-    // TODO: add API key action
+    
     const illustrationResponse = await fetch('http://127.0.0.1:8000/illustration', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ input_text: 'User request:' + inputText + '\nFashion styling advice' + data.message })
+      body: JSON.stringify({ input_text: 'User request:' + inputText + '\nFashion styling advice' + data.message, api_key: apiKeyInput.value })
     });
 
     const illustrationData = await illustrationResponse.json();

@@ -35,19 +35,19 @@ class Account(BaseModel):
 
 db = {}
 @app.post("/account")
-def get_image(account: Account):
+def accountAction(account: Account):
     if account.create_account:
         if account.username in db:
             return {"success": False}
-        db[account.username] = [account.password, None]
-        return {"success": True, "key": None}
+        db[account.username] = [account.password, "0000000000"]
+        return {"success": True, "key": "0000000000"}
     if account.username in db and db[account.username][0] == account.password:
         return {"success": True, "key": db[account.username][1]}
     return {"success": False}
 
 
 @app.post("/record")
-def get_image(account: Account):
+def recordAPIkey(account: Account):
     db[account.username][1] = account.apiKey
     return
 
@@ -55,6 +55,7 @@ def get_image(account: Account):
 # GenAI Functions
 class Request(BaseModel):
     input_text: str
+    api_key: Optional[str] = "0000000000"
 
 
 @app.post("/advice")
@@ -85,11 +86,11 @@ def get_advice(request: Request, connection=Depends(connect_weaviate)):
 
 
 @app.post("/illustration")
-def get_image(prompt: Request):
+def get_image(request: Request):
 
     image_generate_async_request = ImageGenerateAsyncRequest(
-        apikey="0000000000", # set your personal AI Horde API key here
-        prompt=f"Draw a model illustration base on: {prompt.input_text}",
+        apikey=request.api_key,
+        prompt=f"Draw a model illustration base on: {request.input_text}",
         models=["Deliberate"]
     )
 
