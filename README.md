@@ -11,7 +11,7 @@
    - Weaviate WCS URL
    - Weaviate API key
 
-   (Optional) Set your AI Horde API key in `api.py` for faster image generation.
+   (Optional) Creat an account to set up your own AI Horde API key for faster image generation.
 
 3. For initial setup, run the script `reconfigure_vectorizer.py` in the `resources` file.
 

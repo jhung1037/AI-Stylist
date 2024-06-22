@@ -1,3 +1,4 @@
+from typing import Optional
 from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from horde_sdk.ai_horde_api import AIHordeAPISimpleClient
@@ -24,13 +25,41 @@ app.add_middleware(
 )
 
 
-# API Functions
+# Account Functions
+class Account(BaseModel):
+    create_account: Optional[bool] = None
+    username: str
+    password: Optional[str] = None
+    apiKey: Optional[str] = None
+
+
+db = {}
+@app.post("/account")
+def accountAction(account: Account):
+    if account.create_account:
+        if account.username in db:
+            return {"success": False}
+        db[account.username] = [account.password, "0000000000"]
+        return {"success": True, "key": "0000000000"}
+    if account.username in db and db[account.username][0] == account.password:
+        return {"success": True, "key": db[account.username][1]}
+    return {"success": False}
+
+
+@app.post("/record")
+def recordAPIkey(account: Account):
+    db[account.username][1] = account.apiKey
+    return
+
+
+# GenAI Functions
 class Request(BaseModel):
     input_text: str
+    api_key: Optional[str] = "0000000000"
 
 
 @app.post("/advice")
-async def get_advice(request: Request, connection=Depends(connect_weaviate)):
+def get_advice(request: Request, connection=Depends(connect_weaviate)):
 
     response = connection.advisor_data.query.hybrid(
         query = request.input_text,
@@ -57,11 +86,11 @@ async def get_advice(request: Request, connection=Depends(connect_weaviate)):
 
 
 @app.post("/illustration")
-async def get_image(prompt: Request):
+def get_image(request: Request):
 
     image_generate_async_request = ImageGenerateAsyncRequest(
-        apikey="0000000000", # set your personal AI Horde API key here
-        prompt=f"Draw a model illustration base on: {prompt.input_text}",
+        apikey=request.api_key,
+        prompt=f"Draw a model illustration base on: {request.input_text}",
         models=["Deliberate"]
     )
 
