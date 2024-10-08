@@ -61,9 +61,9 @@ class Request(BaseModel):
 @app.post("/advice")
 def get_advice(request: Request, connection=Depends(connect_weaviate)):
 
-    response = connection.advisor_data.query.hybrid(
+    response = connection.advisor_data.query.near_text(
         query = request.input_text,
-        limit = 5
+        limit = 3
     )
 
     retrieve = ""

@@ -35,3 +35,5 @@ except:
             batch.add_object(properties = weaviate_obj)
     
     print("Advisor collection reconfigured")
+ 
+client.close()
